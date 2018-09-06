@@ -9,7 +9,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 
-import 'src/auth_http_utils.dart';
+import 'auth_http_utils.dart';
 import 'src/crypto/pem.dart';
 import 'src/crypto/rsa.dart';
 import 'src/http_client_base.dart';
@@ -37,11 +37,21 @@ class AccessToken {
     }
   }
 
+  factory AccessToken.fromJson(Map jsonMap) =>
+      AccessToken(
+          jsonMap['type'], jsonMap['data'], DateTime.parse(jsonMap['expiry']));
+
   bool get hasExpired {
     return new DateTime.now().toUtc().isAfter(expiry);
   }
 
   String toString() => "AccessToken(type=$type, data=$data, expiry=$expiry)";
+
+  String toJson() => json.encode({
+    'type': type,
+    'data': data,
+    'expiry': expiry.toString()
+  });
 }
 
 /// OAuth2 Credentials.
@@ -65,6 +75,24 @@ class AccessCredentials {
     if (accessToken == null || scopes == null) {
       throw new ArgumentError('Arguments accessToken/scopes must not be null.');
     }
+  }
+
+  factory AccessCredentials.fromJson(Map jsonMap) {
+    return AccessCredentials(
+        AccessToken.fromJson(json.decode(jsonMap['accessToken'])),
+        jsonMap['refreshToken'],
+        List<String>.from(jsonMap['scopes']),
+        idToken: jsonMap['idToken']
+    );
+  }
+
+  String toJson() {
+    return json.encode({
+      'accessToken': accessToken,
+      'refreshToken': refreshToken,
+      'scopes': scopes,
+      'idToken': idToken
+    });
   }
 }
 

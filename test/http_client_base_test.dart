@@ -7,7 +7,7 @@ library googleapis_auth.http_client_base_test;
 import 'dart:async';
 
 import 'package:googleapis_auth/src/http_client_base.dart';
-import 'package:googleapis_auth/src/auth_http_utils.dart';
+import 'package:googleapis_auth/auth_http_utils.dart';
 import 'package:test/test.dart';
 import 'package:http/http.dart';
 

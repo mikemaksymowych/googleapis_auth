@@ -8,8 +8,8 @@ import 'dart:async';
 
 import 'package:http/http.dart';
 
-import '../auth.dart';
-import 'http_client_base.dart';
+import 'auth.dart';
+import 'src/http_client_base.dart';
 
 /// Will close the underlying `http.Client` depending on a constructor argument.
 class AuthenticatedClient extends DelegatingClient implements AuthClient {
@@ -21,10 +21,10 @@ class AuthenticatedClient extends DelegatingClient implements AuthClient {
   Future<StreamedResponse> send(BaseRequest request) async {
     // Make new request object and perform the authenticated request.
     var modifiedRequest =
-        new RequestImpl(request.method, request.url, request.finalize());
+    new RequestImpl(request.method, request.url, request.finalize());
     modifiedRequest.headers.addAll(request.headers);
     modifiedRequest.headers['Authorization'] =
-        'Bearer ${credentials.accessToken.data}';
+    'Bearer ${credentials.accessToken.data}';
     var response = await baseClient.send(modifiedRequest);
     var wwwAuthenticate = response.headers['www-authenticate'];
     if (wwwAuthenticate != null) {
@@ -53,7 +53,7 @@ class ApiKeyClient extends DelegatingClient {
     if (url.queryParameters.containsKey('key')) {
       return new Future.error(new Exception(
           'Tried to make a HTTP request which has already a "key" query '
-          'parameter. Adding the API key would override that existing value.'));
+              'parameter. Adding the API key would override that existing value.'));
     }
 
     if (url.query == '') {
@@ -63,7 +63,7 @@ class ApiKeyClient extends DelegatingClient {
     }
 
     var modifiedRequest =
-        new RequestImpl(request.method, url, request.finalize());
+    new RequestImpl(request.method, url, request.finalize());
     modifiedRequest.headers.addAll(request.headers);
     return baseClient.send(modifiedRequest);
   }
@@ -100,7 +100,7 @@ class AutoRefreshingClient extends AutoRefreshDelegatingClient {
 abstract class AutoRefreshDelegatingClient extends DelegatingClient
     implements AutoRefreshingAuthClient {
   final StreamController<AccessCredentials> _credentialStreamController =
-      new StreamController.broadcast(sync: true);
+  new StreamController.broadcast(sync: true);
 
   AutoRefreshDelegatingClient(Client client, {bool closeUnderlyingClient: true})
       : super(client, closeUnderlyingClient: closeUnderlyingClient);

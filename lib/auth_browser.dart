@@ -10,7 +10,7 @@ import 'package:http/browser_client.dart';
 import 'package:http/http.dart';
 
 import 'auth.dart';
-import 'src/auth_http_utils.dart';
+import 'auth_http_utils.dart';
 import 'src/http_client_base.dart';
 import 'src/oauth2_flows/implicit.dart';
 
